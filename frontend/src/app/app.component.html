@@ -1,0 +1,39 @@
+<div class="page">
+  <div class="container">
+    <h2 class="title">SinSpeech Sinhala Speech Recognizer</h2>
+    <div class="options">
+      <div>
+        <label for="file" class="upload btn btn-info">
+          <div class="upload-label-div">
+            <img src="../assets/upload_icon.png" class="icon">
+            Upload Audio File
+          </div>
+        </label>
+        <input hidden id="file" type="file" 
+          (change)="onUploadFiles($any($event).target.files)" 
+          name="files" single accept=".flac, .mp3, .wav">
+      </div>
+  
+      <div class="record btn btn-info">
+        <img src="../assets/microphone_icon.png" class="icon">
+        Record Audio
+      </div>
+    </div>
+
+    <div *ngIf="selectedFile.length>0" class="selected-file">
+      <strong>Selected File: </strong>
+      {{ selectedFile }}
+    </div>
+
+    <div *ngIf="status=='processing'" class="processing">
+      Processing...
+    </div>
+
+    <div *ngIf="status=='finished'" class="result">
+      <strong>Decoded Text: </strong>
+      {{ sentence }}
+    </div>
+    
+  </div>
+</div>
+
