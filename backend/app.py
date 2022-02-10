@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 from decoder import offline_decode
 import configparser
@@ -13,6 +14,9 @@ allowed_extensions = parser.get("config", "allowed_extensions")
 port = parser.get("server", "port")
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = base_file_upload_folder
 app.config['MAX_CONTENT_LENGTH'] = max_file_size
@@ -23,6 +27,7 @@ def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/offline-decode', methods=['POST'])
+@cross_origin()
 def upload_file():
 	# check if the post request has the file part
 	if 'file' not in request.files:
