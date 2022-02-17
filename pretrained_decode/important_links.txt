@@ -1,0 +1,5 @@
+https://medium.com/@nithinraok_/decoding-an-audio-file-using-a-pre-trained-model-with-kaldi-c1d7d2fe3dc5
+
+https://seongminpark.com/blog/20201222a/
+
+https://desh2608.github.io/2020-05-18-using-librispeech/
