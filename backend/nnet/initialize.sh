@@ -52,18 +52,6 @@ HCLGDir=$2
 extractorDir=$3
 
 cp $mdlDir/final.mdl ./exp/chain
-# if [ -f "${mdlDir}/final.mat" ]; then
-#     cp $mdlDir/final.mat ./exp/chain
-# fi
-# if [ -f "${mdlDir}/splice_opts" ]; then
-#     cp $mdlDir/splice_opts ./exp/chain
-# fi
-# if [ -f "${mdlDir}/cmvn_opts" ]; then
-#     cp $mdlDir/cmvn_opts ./exp/chain
-# fi
-# if [ -f "${mdlDir}/delta_opts" ]; then
-#     cp $mdlDir/delta_opts ./exp/chain
-# fi
 
 cp -a $HCLGDir/. ./exp/chain/graph
 

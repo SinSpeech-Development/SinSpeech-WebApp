@@ -12,17 +12,29 @@ cd SinSpeech-WebApp/backend/
 
 pip install -r requirements.txt
 ```
+
 Then update the config.ini file accordingly.
 ```
 base_file_upload_folder=/home/lakshan/Documents/SinSpeech-WebApp/backend ( base folder where uploaded files going to save )
 max_file_size=16 ( maximum file size in MB should be int )
 ```
+## Configure NN and I-Vector Extractor
+
+make sure you are in the backend directory when running the below command.
 
 ```
-python app.py
-```
+chmod +x nnet/initialize.sh
+chmod +x nnet/clean_previous.sh
+chmod +x nnet/pretrained_decode.sh
 
-Then the server will start on port 5000. If you want to change to port update `config.ini` file. 
+bash nnet/initialize.sh <path-to-final.mdl> <path-to-HCLG.fst> <path-to-extractor>
+
+```
+Running the server
+
+```
+gunicorn -w 4 - 0.0.0.0:5000 app:app 
+```
 
 ## Decoding files
 

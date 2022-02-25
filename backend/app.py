@@ -1,30 +1,21 @@
+from concurrent.futures import thread
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 from decoder import offline_decode
-import configparser
-
-parser = configparser.ConfigParser()
-parser.read("config.ini")
-
-base_file_upload_folder = parser.get("config", "base_file_upload_folder")
-max_file_size = parser.getint("config", "max_file_size") * 1024 * 1024 
-allowed_extensions = parser.get("config", "allowed_extensions")
-
-port = parser.get("server", "port")
+from load_config import load_config
+import threading
 
 app = Flask(__name__)
 cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+load_config(app)
 
-app.secret_key = "secret key"
-app.config['UPLOAD_FOLDER'] = base_file_upload_folder
-app.config['MAX_CONTENT_LENGTH'] = max_file_size
-
-ALLOWED_EXTENSIONS = set(allowed_extensions.split())
+thread_lock = threading.Lock()
+task_counter = { 'count' : 0 }
 
 def allowed_file(filename):
-	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+	return '.' in filename and filename.rsplit('.', 1)[1].lower() \
+			in app.config['ALLOWED_EXTENSIONS']
 
 @app.route('/offline-decode', methods=['POST'])
 @cross_origin()
@@ -41,8 +32,14 @@ def upload_file():
 		return resp
 	if file and allowed_file(file.filename):
 		filename = secure_filename(file.filename)
-		offline_decode(file, filename, app)
-		resp = jsonify({'message' : 'File successfully uploaded'})
+		task_id = None
+		with thread_lock:
+			task_counter['count'] = task_counter['count'] + 1
+			task_id = task_counter['count']
+
+		result = offline_decode(file, filename, app, task_id)
+		resp = jsonify({'message' : 'File successfully uploaded',
+						'result' : result})
 		resp.status_code = 201
 		return resp
 	else:
@@ -51,4 +48,4 @@ def upload_file():
 		return resp
 
 if __name__ == "__main__":
-    app.run(port=port)
+    app.run()
