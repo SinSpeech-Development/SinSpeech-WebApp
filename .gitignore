@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+pretrained_decode/exp
+pretrained_decode/data
+pretrained_decode/steps
+pretrained_decode/utils
+pretrained_decode/src
+
+

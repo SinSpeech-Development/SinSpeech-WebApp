@@ -15,8 +15,10 @@ newLines = []
 for f in wavFiles:
     parts = f.rsplit(".", maxsplit=1)
     newLines.append(f"SINSPEECH_{parts[0]} {wavOrigin}{f}\n")
+
+print(newLines)
     
-newScp = open(f"{dataDir}wav.scp", "w")
+newScp = open(f"{dataDir}wav.scp", "w+")
 newScp.writelines(newLines)
 newScp.close()
 
