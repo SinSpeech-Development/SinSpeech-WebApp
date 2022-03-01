@@ -1,0 +1,12 @@
+[Unit]
+Description=uWSGI instance to serve backend app
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/root/kaldi/egs/SinSpeech-WebApp/backend
+ExecStart=/usr/local/bin/uwsgi --ini uwsgi.ini
+
+[Install]
+WantedBy=multi-user.target

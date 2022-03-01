@@ -30,10 +30,10 @@ chmod +x nnet/pretrained_decode.sh
 bash nnet/initialize.sh <path-to-final.mdl> <path-to-HCLG.fst> <path-to-extractor>
 
 ```
-Running the server
+Running the server using gunicorn
 
 ```
-gunicorn -w 4 - 0.0.0.0:5000 app:app 
+gunicorn -w 4 -b 0.0.0.0:5000 app:app 
 ```
 
 ## Decoding files
@@ -46,3 +46,28 @@ POST : <BASE_URL>:PORT/offline-decode
 key : file
 value : select the file you want to decode
 ```
+
+## Production setup
+
+### run uwsgi server
+```
+uwsgi --socket 0.0.0.0:5000 --protocol=http -w app:app
+```
+
+### Configure nginx
+
+```
+sudo cp nginx/backend.conf /etc/nginx/sites-available
+
+sudo ln -s /etc/nginx/sites-available/backend.conf /etc/nginx/sites-enabled
+
+
+```
+
+```
+sudo systemctl start backend
+sudo systemctl enable backend
+sudo systemctl status backend
+
+```
+
