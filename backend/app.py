@@ -38,12 +38,12 @@ def upload_file():
 			task_id = task_counter['count']
 
 		result = offline_decode(file, filename, app, task_id)
-		resp = jsonify({'message' : 'File successfully uploaded',
+		resp = jsonify({'message' : 'file decoding successful',
 						'result' : result})
 		resp.status_code = 201
 		return resp
 	else:
-		resp = jsonify({'message' : 'Allowed file types are mp3, flac, wav'})
+		resp = jsonify({'message' : 'Allowed file types are mp3, flac, wav, ogg'})
 		resp.status_code = 400
 		return resp
 

@@ -1,6 +1,5 @@
+from multiprocessing.connection import wait
 import os
-from unittest import result
-from pydub import AudioSegment
 from subprocess import Popen, PIPE, STDOUT
 
 def extract_decode_results(task_id):
@@ -18,6 +17,7 @@ def extract_decode_results(task_id):
                                 .split(' ', maxsplit=1)[1]
     return ""
 
+
 def excute_shell_command(command, wait):
     try:
         process = Popen(command, stdout=PIPE, stderr=STDOUT)
@@ -26,11 +26,19 @@ def excute_shell_command(command, wait):
     except Exception as e:
         print(str(e))
 
-def convert_to_wav(full_path, format):
-    audio_file = AudioSegment.from_file(full_path, format)
-    wave_file = audio_file.set_frame_rate(16000)
-    wave_file.export(full_path.replace( \
-        ".{}".format(format), ".wav"), format="wav")
+
+def convert_to_wav(full_path):
+
+    final_wav_path = full_path.split('.')[0] + "xx" + ".wav"
+
+    try:
+        process = Popen(["sox", full_path, "-r 16k", "-b 16", final_wav_path], 
+                            stdout=PIPE, stderr=STDOUT)
+        process.stdout.close()
+        process.wait()
+    except Exception as e:
+        print(str(e))
+
 
 def offline_decode(file, filename, app, task_id):
 
@@ -41,7 +49,7 @@ def offline_decode(file, filename, app, task_id):
     audio_path = os.path.join(app.config['UPLOAD_FOLDER'], audio_dir, filename)
     file.save(audio_path)
 
-    convert_to_wav(audio_path, audio_path.split('.')[1])
+    convert_to_wav(audio_path)
 
     os.remove(audio_path)
 
