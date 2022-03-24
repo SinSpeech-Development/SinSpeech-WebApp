@@ -19,6 +19,13 @@
     padding-top: 20px;
 }
 
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .record {
     width: 400px;
     height: 75px;
@@ -114,4 +121,94 @@
 .instruction {
     margin: 0;
     font-size: 13px;
+}
+
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.uploaded-file {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.uploaded-file-text {
+    margin-bottom: 10px;
+    font-family: "Garamond", "serif";
+    font-size: 20px;
+    font-weight: 500;
+}
+
+audio {
+    background-color: #b4edca;
+    padding: 5px;
+    border-radius: 18pt;
+}
+
+.processing {
+    padding-bottom: 20px;
+}
+
+.decode {
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.decoded-text-label {
+    margin-bottom: 10px;
+    font-family: "Garamond", "serif";
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.decoded-text {
+    margin-bottom: 10px;
+    min-height: 100px;
+    padding: 20px;
+    width: 799px;
+    border: 2px solid #a6b6c2;
+    border-radius: 10px;
+}
+
+.copy-button {
+    background-color: #f7f7f7;
+    color: #C4CCD7;
+    border: 2px solid #a6b6c2;
+    border-radius: 10px;
+}
+
+.error {
+    color: #f0868b;
+    padding-bottom: 20px;
+}
+
+.home-button {
+    background-color: #f7f7f7;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.home-button-inner-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.home-label {
+    font-weight: 500;
+    font-family: "Garamond", "serif";
+    font-size: 30px;
+    margin: 0px;
 }
