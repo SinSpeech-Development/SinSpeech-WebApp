@@ -3,7 +3,7 @@
     <h2 class="title">Open-source Sinhala Speech Recognition</h2>
 
     <div *ngIf="uiState=='home'" class="home-container">
-        <div class="record btn btn-info">
+        <div class="record btn btn-info" (click)="recordButtonClicked()">
             <div class="record-inner-container">
                 <img src="../../../../assets/microphone_icon.png" class="icon">
                 <h2 class="record-label">RECORD ONLINE</h2>
@@ -33,7 +33,8 @@
     <div *ngIf="uiState=='upload'" class="upload-container">
         <div class="uploaded-file">
             <div class="uploaded-file-text">
-                <span>Uploaded file: </span>
+                <span *ngIf="recordingStatus=='notRecording'">Uploaded file: </span>
+                <span *ngIf="recordingStatus=='recordingStopped'">Recorded uploaded file: </span>
                 {{ selectedFile }}
             </div>
             <audio [src]="urlObj" controls></audio>
@@ -64,5 +65,22 @@
             </div>
         </div>
     </div>
-    
+
+    <div *ngIf="uiState=='record'" class="record-container">
+        <p *ngIf="recordingStatus=='recordingStarted'" class="recording">Recording...</p>
+        <p *ngIf="recordingStatus=='recordingError'" class="error">Error occured while recording</p>
+        <div class="instructions-container">
+            <p class="instruction-title">Make sure to...</p>
+            <p class="instruction">start speaking after clicking the button (wait about 1 second before you speak) and,</p>
+            <p class="instruction">stop recording after you completely finish speaking (wait about 1 second before you click the button)</p>
+        </div>
+        <div *ngIf="recordingStatus=='notRecording'" class="start-stop-record">
+            <img src="../../../../assets/start_record_icon.png" class="record-icon" (click)="startRecording()">
+            <h2 class="recording-label">Start recording</h2>
+        </div>
+        <div *ngIf="recordingStatus=='recordingStarted'" class="start-stop-record">
+            <img src="../../../../assets/stop_record_icon.png" class="record-icon" (click)="stopRecording()">
+            <h2 class="recording-label">Stop recording</h2>
+        </div>  
+    </div>
 </div>
