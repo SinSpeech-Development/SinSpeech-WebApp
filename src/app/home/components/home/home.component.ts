@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Router } from '@angular/router';
 import { FileService } from '../../services/file.service';
+import * as RecordRTC from 'recordrtc';
 
 @Component({
   selector: 'app-home',
@@ -15,9 +15,55 @@ export class HomeComponent implements OnInit {
   uploadStatus: string = "";
   decodedText: string = "";
 
-  constructor(private fileService: FileService, private sanitization: DomSanitizer, private router: Router) {}
+  recordingStatus: string = "notRecording";
+  recorder: any;
+  recordedFile: any;
+
+  constructor(private fileService: FileService, private sanitization: DomSanitizer) {}
 
   ngOnInit(): void {
+  }
+
+  recordButtonClicked() {
+    this.uiState = "record";
+    this.recordingStatus = "notRecording";
+  }
+
+  startRecording() {
+    let mediaConstraints = {
+      video: false,
+      audio: true
+    };
+    navigator.mediaDevices.getUserMedia(mediaConstraints)
+      .then(this.successCallback.bind(this), this.errorCallback.bind(this));
+  }
+
+  successCallback(stream: any) {
+    this.recordingStatus = "recordingStarted";
+    var options = {
+      type: "audio",
+      mimeType: "audio/flac",
+      numberOfAudioChannels: 1,
+      sampleRate: stream.sampleRate
+    };
+    var StereoAudioRecorder = RecordRTC.StereoAudioRecorder;
+    this.recorder = new StereoAudioRecorder(stream, options);
+    this.recorder.record();
+  }
+
+  errorCallback(error: string) {
+    this.recordingStatus = "recordingError";
+  }
+
+  stopRecording() {
+    this.recordingStatus = "recordingStopped";
+    this.recorder.stop(this.processRecording.bind(this));
+    console.log("SAMPLE RATE: ", this.recorder.sampleRate);
+  }
+
+  processRecording(blob: any) {
+    this.recordedFile = new File([blob], "recording.flac");
+    this.onUploadFiles([this.recordedFile]);
   }
 
   onUploadFiles(files: File[]): void {
