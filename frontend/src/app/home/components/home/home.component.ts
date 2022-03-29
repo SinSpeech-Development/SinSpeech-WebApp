@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   recordingStatus: string = "notRecording";
   recorder: any;
   recordedFile: any;
+  stream: any;
 
   constructor(private fileService: FileService, private sanitization: DomSanitizer) {}
 
@@ -39,6 +40,7 @@ export class HomeComponent implements OnInit {
   }
 
   successCallback(stream: any) {
+    this.stream = stream;
     this.recordingStatus = "recordingStarted";
     var options = {
       type: "audio",
@@ -58,7 +60,9 @@ export class HomeComponent implements OnInit {
   stopRecording() {
     this.recordingStatus = "recordingStopped";
     this.recorder.stop(this.processRecording.bind(this));
-    console.log("SAMPLE RATE: ", this.recorder.sampleRate);
+    this.stream.getTracks().forEach(function(track: any) {
+      track.stop();
+    });
   }
 
   processRecording(blob: any) {
