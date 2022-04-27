@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class FileService {
-  private serverUrl = "http://143.198.76.162:5000";
+  private serverUrl = "http://146.190.232.161:5000";
 
   constructor(private http: HttpClient) { }
 
